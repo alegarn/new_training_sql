@@ -1,6 +1,12 @@
 CREATE DATABASE `Test_SQL`;
 USE `Test_SQL`;
 
+DROP TABLE `cart_products`;
+DROP TABLE `products`;
+DROP TABLE `orders`;
+DROP TABLE `carts`;
+DROP TABLE `customers`;
+
 /* first table https://www.sqlstyle.guide/#create-syntax*/
 CREATE TABLE `customers` (
   `customer_id` INT NOT NULL AUTO_INCREMENT,
@@ -36,7 +42,7 @@ ALTER TABLE `carts`
 CREATE TABLE `orders` (
   `order_id` INT NOT NULL AUTO_INCREMENT,
   `cart_id` INT,
-  `order_date` TIMESTAMP DEFAULT NOW(),
+  `order_date` TIMESTAMP DEFAULT NOW(), -- special MySQL: TIMESTAMP DEFAULT NOW(),
 
   PRIMARY KEY(`order_id`)
 );
@@ -51,7 +57,7 @@ CREATE TABLE `products` (
   `product_id` INT NOT NULL AUTO_INCREMENT,
   `product_name` VARCHAR(150) NOT NULL,
   `price` DECIMAL(10,2) NOT NULL,
-  `created_at` TIMESTAMP DEFAULT NOW(),
+  `created_at` TIMESTAMP DEFAULT NOW(), -- special MySQL: TIMESTAMP DEFAULT NOW(),
 
   PRIMARY KEY(`product_id`)
 );
@@ -63,7 +69,8 @@ CREATE TABLE `cart_products` (
   `cart_product_id` INT NOT NULL AUTO_INCREMENT,
   `cart_id` INT,
   `product_id` INT,
-  `created_at` TIMESTAMP DEFAULT NOW(),
+  `quantity` INT,
+  `created_at` TIMESTAMP DEFAULT NOW(), -- special MySQL: TIMESTAMP DEFAULT NOW(),
 
   PRIMARY KEY(`cart_product_id`)
 );

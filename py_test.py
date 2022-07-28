@@ -36,8 +36,6 @@ try:
 #Populate the customers Table with test data
         n = 0
 
-
-
         while n < 11:
             n += 1
             usa_number = "+1" + str(fake.msisdn())
@@ -56,67 +54,155 @@ try:
 
                 print("Table seeded successfully ")
 
+        n = 0
+        #products
         while n < 11:
-            #products
-            row = [fake.job(), faker.random_int(1, 100)]
+
+            row = [fake.job(), random.randrange(101)]
 
             cursor.execute(" \
                             INSERT INTO products (product_name, price) \
                             VALUES ('%s', '%s');" \
                             % (row[0], row[1]))
-                            if n == 10:
-                                print("iteration %s" % n)
-                                time.sleep(0.5)
-                                conn.commit()
+            if n == 10:
+                print("iteration %s" % n)
+                time.sleep(0.5)
+                conn.commit()
+            n = n + 1
 
-        #carts
-        row = [str(random_int(1,10))]
+        #SELECT customer_id, et injecter dans carts
+        n = 0
 
-        cursor.execute(" \
-            INSERT INTO carts (customer_id) \
-            VALUES ('%s');" \
-            % (row[0]))
+        while n < 11:
+            cursor.execute(" \
+                SELECT C.customer_id FROM customers as C;")
 
-        #orders
-        row = [str(random_int(1,10))]
+            myresult = cursor.fetchall()
+            c_id = []
 
-        cursor.execute(" \
-                                INSERT INTO products (cart_id) \
-                                VALUES ('%s');" \
-                                % (row[0]))
+            for x in myresult:
+                c_id.append(str(x[0]))
+                print(str(x[0]) + " str")
 
-          `order_id` INT NOT NULL AUTO_INCREMENT,
-          `cart_id` INT,
-          `order_number` INT NOT NULL,
-          `order_date` TIMESTAMP DEFAULT NOW(),
+            row = [random.choice(c_id), 0]
+            print(row[0])
 
-
-          CREATE TABLE `cart_products` (
-            `cart_product_id` INT NOT NULL AUTO_INCREMENT,
-            `cart_id` INT,
-            `product_id` INT,
-            `created_at` TIMESTAMP DEFAULT NOW(),
+            try:
+                cursor.execute(" \
+                    INSERT INTO carts (customer_id, total) \
+                    VALUES ('%s', '%s');" \
+                    % (row[0], row[1]))
+                time.sleep(0.5)
+                conn.commit()
 
 
+                myresult = cursor.fetchall()
+
+                for x in myresult:
+                    print(str(x[0]) + " str")
+
+                n = n + 1
+
+            except cursor.Error as error:
+                print("Failed to insert table in MySQL: {}".format(error))
+
+        #remplir la table cart_products
+        n = 0
+        while n < 11:
+
+            try:
+                cursor.execute(" \
+                SELECT C.cart_id FROM carts as C;")
+
+                myresult = cursor.fetchall()
+                cart_id = []
+                for x in myresult:
+                    cart_id.append(str(x[0]))
+
+                row_cart_id = [random.choice(cart_id)]
+
+                cursor.execute(" \
+                SELECT P.product_id FROM products as P;")
+
+                myresult = cursor.fetchall()
+                product_id = []
+                for x in myresult:
+                    product_id.append(str(x[0]))
+
+                row_product_id = [random.choice(product_id)]
+
+                cursor.execute(" \
+                            INSERT INTO cart_products (cart_id, product_id, quantity) \
+                            VALUES ('%s', '%s', '%s');" \
+                            % (row_cart_id[0], row_product_id[0], random.randrange(1, 3)))
+                time.sleep(0.5)
+                conn.commit()
+
+            except cursor.Error as error:
+                print("Failed to insert table in MySQL: {}".format(error))
+            n = n + 1
 
 
-        #c.rt
-        row = [fake.name(), fake.address(), fake.email(), \
-            usa_number, fake.city()]
+        #carts total update
+        try: # Arranging Rows within Partitions
+            cursor.execute(" \
+                        UPDATE carts as C \
+        	               INNER JOIN ( \
+        		                 SELECT 	C.cart_id, \
+        				                    C.product_id, \
+        				                    C.quantity, \
+        				                    P.price, \
+        				                    (quantity * P.price) AS total_prod, \
+        				                    (sum(quantity * P.price) \
+        					                               OVER ( \
+        						                                 PARTITION BY cart_id \
+        						                                 ORDER BY cart_id)) AS sum_cart \
+        		                 FROM cart_products as C \
+        		                 INNER JOIN products as P \
+        		                 ON C.product_id = P.product_id \
+        		                 ORDER BY C.cart_id \
+        		           ) as cart_sum ON C.cart_id = cart_sum.cart_id \
+                         SET total = total + cart_sum.sum_cart;")
+            myresult = cursor.fetchall()
+            time.sleep(0.5)
+            conn.commit()
+        except Exception as e:
+            raise
 
-        cursor.execute(" \
-            INSERT INTO customers (customer_name, customer_address, customer_email, customer_phone, customer_city) \
-            VALUES ('%s', '%s', '%s', '%s', '%s');" \
-            % (row[0], row[1], row[2], row[3], row[4]))
 
-        #carts - upd.te
-        row = [ total]
 
-        cursor.execute(" \
-                    INSERT INTO carts (total) \
-                    VALUES ('%s');" \
-                    % (row[0]))
 
+
+
+
+
+
+        n = 0
+        # SELECT cart_id, et injecter dans orders (total des )
+        #while n < 11:
+
+            #try:
+            #    cursor.execute(" \
+            #    SELECT C.cart_id FROM carts as C;")
+
+            #    myresult = cursor.fetchall()
+            #    cart_id = []
+            #    for x in myresult:
+            #        cart_id.append(str(x[0]))
+#
+            #    row = [random.choice(cart_id), 0]
+
+                #no order_number
+            #    cursor.execute(" \
+            #                INSERT INTO orders (cart_id, order_number) \
+            #                VALUES ('%s', '%s');" \
+            #                % (row[0], row[1]))
+            #    time.sleep(0.5)
+            #    conn.commit()
+            #    print(row[0])
+
+            #except cursor.Error as error:
+            #    print("Failed to insert table in MySQL: {}".format(error))
 
     except cursor.Error as error:
         print("Failed to create table in MySQL: {}".format(error))

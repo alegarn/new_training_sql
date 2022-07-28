@@ -43,8 +43,7 @@ ALTER TABLE carts
 CREATE TABLE orders (
   order_id INT NOT NULL AUTO_INCREMENT,
   cart_id INT,
-  order_number INT NOT NULL,
-  order_date DATE DEFAULT GETDATE(),
+  order_date DATE DEFAULT GETDATE(), -- special MySQL: TIMESTAMP DEFAULT NOW(),
 
   PRIMARY KEY(order_id)
 );
@@ -59,7 +58,7 @@ CREATE TABLE products (
   product_id INT NOT NULL AUTO_INCREMENT,
   product_name VARCHAR(150) NOT NULL,
   price DECIMAL(10,2) NOT NULL,
-  created_at DATE DEFAULT GETDATE(),
+  created_at DATE DEFAULT GETDATE(), -- special MySQL: TIMESTAMP DEFAULT NOW(),
 
   PRIMARY KEY(product_id)
 );
@@ -71,7 +70,8 @@ CREATE TABLE cart_products (
   cart_product_id INT NOT NULL AUTO_INCREMENT,
   cart_id INT,
   product_id INT,
-  order_date DATE DEFAULT GETDATE(),
+  quantity INT,
+  created_at DATE DEFAULT GETDATE(), -- special MySQL: TIMESTAMP DEFAULT NOW(),
 
   PRIMARY KEY(cart_product_id)
 );
