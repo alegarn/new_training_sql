@@ -59,20 +59,22 @@ try:
 #Populate the customers Table with test data
 n = 0
 
-while n < 11:
-    n += 1
-    row = [fake.name(), fake.address(), fake.email(), \
-        fake.phone_number(), fake.city()]
+    while n < 11:
+        n += 1
+        row = [fake.name(), fake.address(), fake.email(), \
+            fake.phone_number(), fake.city()]
 
-    cursor.execute(' \
-        INSERT INTO `customers` (customer_name, customer_address, customer_email, customer_phone, customer_city) \
-        VALUES ("%s", "%s", "%s", %s, "%s"); \
-        ' % (row[0], row[1], row[2], row[3], row[4]))
+            cursor.execute(' \
+            INSERT INTO `customers` (customer_name, customer_address, customer_email, customer_phone, customer_city) \
+            VALUES ("%s", "%s", "%s", %s, "%s"); \
+            ' % (row[0], row[1], row[2], row[3], row[4]))
 
-    if n == 10:
-        print("iteration %s" % n)
-        time.sleep(0.5)
-        conn.commit()
+            if n == 10:
+                print("iteration %s" % n)
+                time.sleep(0.5)
+                conn.commit()
+
+
 
     mySql_Create_carts_Query = """CREATE TABLE carts (
                                 cart_id INT NOT NULL AUTO_INCREMENT,
@@ -88,7 +90,7 @@ while n < 11:
 
 #Populate the carts Table with test data
 
-        mySql_Create_orders_Query = """CREATE TABLE orders (
+    mySql_Create_orders_Query = """CREATE TABLE orders (
                                         order_id INT NOT NULL AUTO_INCREMENT,
                                         cart_id INT,
                                         order_number INT NOT NULL,
@@ -96,7 +98,7 @@ while n < 11:
                                         PRIMARY KEY(order_id)
                                         );"""
 
-        mysql_alter_orders_query = """ALTER TABLE orders
+    mysql_alter_orders_query = """ALTER TABLE orders
                                         ADD CONSTRAINT cart_in_order_fk1 FOREIGN KEY (cart_id) REFERENCES carts(cart_id);"""
 
 #Populate the orders Table with test data
