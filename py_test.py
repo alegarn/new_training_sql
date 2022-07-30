@@ -145,6 +145,7 @@ try:
 
         #carts total update
         try: # Arranging Rows within Partitions
+            # https://stackoverflow.com/questions/11588710/mysql-update-query-with-sub-query
             cursor.execute(" \
                         UPDATE carts as C \
         	               INNER JOIN ( \
@@ -171,7 +172,32 @@ try:
 
 
 
+        #taking ord.rs c.nt..n.ng only complete carts, contain.ng pr.d.cts
+        cursor.execute(" \
+            SELECT DISTINCT C.cart_id \
+            FROM cart_products as C \
+            ")
 
+        myresult = cursor.fetchall()
+        c_id = []
+        for x in myresult:
+            c_id.append(str(x[0]))
+
+        try:
+            cursor.execute(" \
+                    INSERT INTO orders (cart_id) \
+                    SELECT DISTINCT cart_id  \
+                    FROM carts  \
+                    WHERE carts.total > 0 AND cart_id < 9 \
+                    GROUP BY cart_id \
+                    ORDER BY RAND() \
+                    ;")
+
+            time.sleep(0.5)
+            conn.commit()
+
+        except cursor.Error as e:
+            print("Failed to insert table in MySQL: {}".format(e))
 
 
 
