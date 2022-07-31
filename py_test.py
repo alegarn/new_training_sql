@@ -36,7 +36,7 @@ try:
 #Populate the customers Table with test data
         n = 0
 
-        while n < 11:
+        while n < 19:
             n += 1
             usa_number = "+1" + str(fake.msisdn())
             row = [fake.name(), fake.address(), fake.email(), \
@@ -73,7 +73,7 @@ try:
         #SELECT customer_id, et injecter dans carts
         n = 0
 
-        while n < 11:
+        while n < 71:
             cursor.execute(" \
                 SELECT C.customer_id FROM customers as C;")
 
@@ -108,7 +108,7 @@ try:
 
         #remplir la table cart_products
         n = 0
-        while n < 11:
+        while n < 71:
 
             try:
                 cursor.execute(" \
@@ -188,7 +188,7 @@ try:
                     INSERT INTO orders (cart_id) \
                     SELECT DISTINCT cart_id  \
                     FROM carts  \
-                    WHERE carts.total > 0 AND cart_id < 9 \
+                    WHERE carts.total > 0 AND cart_id < 70 \
                     GROUP BY cart_id \
                     ORDER BY RAND() \
                     ;")
