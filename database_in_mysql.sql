@@ -33,7 +33,7 @@ CREATE TABLE `carts` (
 
 /* https://www.w3schools.com/mysql/mysql_foreignkey.asp */
 ALTER TABLE `carts`
-  ADD CONSTRAINT `customer_in_cart_fk1` FOREIGN KEY (`customer_id`) REFERENCES `customers`(`customer_id`);
+  ADD CONSTRAINT `customer_in_cart_fk1` FOREIGN KEY (`customer_id`) REFERENCES `customers`(`customer_id`) ON DELETE CASCADE;
 
 -- Populate the carts Table with test data
 
@@ -48,7 +48,7 @@ CREATE TABLE `orders` (
 );
 
 ALTER TABLE `orders`
-  ADD CONSTRAINT `cart_in_order_fk1` FOREIGN KEY (`cart_id`) REFERENCES `carts`(`cart_id`);
+  ADD CONSTRAINT `cart_in_order_fk1` FOREIGN KEY (`cart_id`) REFERENCES `carts`(`cart_id`) ON DELETE CASCADE;
 
 -- Populate the orders Table with test data
 
@@ -76,8 +76,8 @@ CREATE TABLE `cart_products` (
 );
 
 ALTER TABLE `cart_products`
-  ADD CONSTRAINT `cart_in_cart_products_fk1` FOREIGN KEY (`cart_id`) REFERENCES `carts`(`cart_id`),
-  ADD CONSTRAINT `product_id_in_cart_products_fk2` FOREIGN KEY(`product_id`) REFERENCES `products`(`product_id`);
+  ADD CONSTRAINT `cart_in_cart_products_fk1` FOREIGN KEY (`cart_id`) REFERENCES `carts`(`cart_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `product_id_in_cart_products_fk2` FOREIGN KEY(`product_id`) REFERENCES `products`(`product_id`) ON DELETE CASCADE;
 
 /* table customers, products + https://www.w3schools.com/python/python_mysql_create_db.asp*/
 /* https://www.w3schools.com/mysql/mysql_create_index.asp */
