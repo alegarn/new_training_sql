@@ -1,0 +1,6 @@
+https://www.w3resource.com/sql-exercises/movie-database-exercise/subqueries-exercises-on-movie-database.php
+
+img: https://www.w3resource.com/w3r_images/movie-database.png
+
+1. From the following table, write a SQL query to find the actors who played a role in the movie 'Annie Hall'. Return all the fields of actor table.
+
