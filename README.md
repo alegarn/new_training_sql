@@ -13,8 +13,10 @@ Look at:
 - Being able to do a **pure** SQL DBMS
 - Testing Windows functions
 
+### In movie_db_sql_ex:
+- Exercices (basics and sub-queries)
 
-### The steps:
+### The steps (exercices_mysql/Training_SQL.ipynb):
 
 - Install (Python Librairies):
 	- [Python](https://www.python.org/downloads/)
@@ -34,6 +36,7 @@ Look at:
 	- insert the datas (through faker) using SQL
 
 - Database "good" for queries
+
 
 **Some basic questions**:
 - In this database, show the customers, products, finally the orders. 
