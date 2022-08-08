@@ -1,11 +1,11 @@
 CREATE DATABASE `Test_SQL`;
 USE `Test_SQL`;
 
-DROP TABLE `cart_products`;
-DROP TABLE `products`;
-DROP TABLE `orders`;
-DROP TABLE `carts`;
-DROP TABLE `customers`;
+DROP TABLE if EXISTS `cart_products`;
+DROP TABLE if EXISTS `products`;
+DROP TABLE if EXISTS `orders`;
+DROP TABLE if EXISTS `carts`;
+DROP TABLE if EXISTS `customers`;
 
 /* first table https://www.sqlstyle.guide/#create-syntax*/
 CREATE TABLE `customers` (
