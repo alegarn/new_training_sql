@@ -2,7 +2,7 @@
 
 There is a repo to train (my)SQL!
 
-Look at:
+**Look at**:
 - database.sql (Instant creation of 'Test_SQL' DB)
 - database.py (Fully manual, with Faker, seed in Python)
 - Training_SQL.ipynb (SQL queries)
